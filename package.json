@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "dependencies": {
+    "escape-html": "^1.0.3",
+    "marked": "^0.3.12",
+    "puppeteer": "^1.2.0"
+  },
+  "scripts": {
+    "clean": "rm -rf **/dist",
+    "build": "node build.js"
+  }
+}
