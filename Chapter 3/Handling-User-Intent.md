@@ -434,6 +434,310 @@ The button rendered in above example would have "lamp on" or "lamp off" text dep
 
 ## Validating user input
 
+The information collected from the users is often required to be in particular formats and to ensure this, we have to validate all user submitted data. Vue does not dictate any validation pattern; we can use native form validation API, custom JavaScript validations, server-side validations or a special purpose validation library. Let's try all these validation patterns.
+
+### HTML Form Validation
+
+Suppose we have a user registration page as follows:
+
+``` html
+<template>
+  <form ref="register" @submit.prevent="validate">
+    <div>
+      Name <input type="text" v-model="name" required />
+    </div>
+
+    <div>
+      Email <input type="email" v-model="email" required pattern="[a-z0-9_.]+@gmail.com" />
+    </div>
+
+    <div>
+      Gender
+      <label>
+        <input type="radio" v-model="gender" value="Female" /> Female
+      </label>
+
+      <label>
+        <input type="radio" v-model="gender" value="Male" /> Male
+      </label>
+
+      <label>
+        <input type="radio" v-model="gender" value="Other" /> Other
+      </label>
+    </div>
+
+    <div>
+      Birth Year
+      <input type="number"  v-model.number="yearOfBirth" min="1900" max="2000" required />
+    </div>
+
+    <div>
+      Password
+      <input type="password" v-model="password" ref="password" maxlength="30" required />
+    </div>
+
+    <div>
+      Password Confirmation
+      <input type="password" v-model="passwordConfirmation" ref="passwordConfirmation" maxlength="30" required />
+    </div>
+
+    <div>
+      <button type="submit">Register</button>
+    </div>
+
+    {{ message }}
+  </form>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      name: '',
+      email: '',
+      gender: '',
+      yearOfBirth: '',
+      password: '',
+      passwordConfirmation: '',
+
+      message: null
+    }
+  },
+  methods: {
+    validate() {
+      // Check data here.
+    }
+  }
+}
+</script>
+```
+
+Here, we want to validate following constraints:
+
+1. All fields are required.
+1. The `email` field has a valid email address.
+1. The `gender` field has one of the provided values.
+1. The `yearOfBirth` field has a value between 1900 and 2000.
+1. The `password` field has a value of character length between 8 and 30.
+1. The `passwordConfirmation` field has the same value as the `password` field.
+
+HTML provides basic constraint validation attributes. Following is a comprehensive list of these attributes:
+
+- `type` - It can verify `email` or `url` values are as per defined standards.
+- `pattern` - It matches the value against the defined regular expression.
+- `min` - It checks the value is greater than or equal to the defined minimum. It works for date, number and range fields.
+- `max` - It checks the value is lesser than or equal to the defined maximum. It works for date, number and range fields.
+- `required` - It ensures the value is not empty.
+- `step` - It ensures the value is an integral multiple of defined step size. If `min` is defined, then it checks that value is `min` + an integral multiple of step size.
+- `maxlength` - It ensures the number of characters does not exceed the defined length.
+
+From required constraints on the registration form, we can validate constraints 1 to 4 with validation attributes. But it is not possible to check constraint 5, password length, as we have only the maxlength constraint, or constraint 6, password confirmation, there is no attribute to verify that. Checking whether each field has a valid value in markup is instead a difficult task, and we cannot always represent all the constraints with above-listed attributes. We need to JavaScript constraint validation API in such scenarios.
+
+The `validatePassword` method checks the strength of the password. We use `setCustomValidity` method from constraint validation API to set custom validation messages on the password HTML element.
+
+``` js
+ ...
+ methods: {
+    validatePassword() {
+      if (!/[A-Z]/.test(this.password)) {
+        this.$refs.password.setCustomValidity('Password should have at least one upper case character.')
+      } else if (!/[a-z]/.test(this.password)) {
+        this.$refs.password.setCustomValidity('Password should have at least one lower case character.')
+      } else if (!/[0-9]/.test(this.password)) {
+        this.$refs.password.setCustomValidity('Password should have at least one digit character.')
+      } else if (!/[*!@#$%^&\(\)_+=_,.?/.<>'";:\[\]\{\}|]/.test(this.password)) {
+        this.$refs.password.setCustomValidity('Password should have at least one special character.')
+      } else if (this.password.length < 8) {
+        this.$refs.password.setCustomValidity('Password should be at least 8 characters long.')
+      } else {
+        this.$refs.password.setCustomValidity('')
+      }
+    },
+    validate() {
+      // Check data here.
+    }
+ }
+ ...
+```
+
+We should register a watcher to validate `password` whenever it changes.
+
+``` js
+  ...
+  methods: { ... },
+  watch: {
+    password: 'validatePassword'
+  }
+  ...
+```
+
+Similarly, we can check for `passwordConfirmation` value is same as `password` value. The `validatePasswordConfirmation` methods do that.
+
+``` js
+  ...
+  methods: {
+    validatePassword() { ... },
+    validatePasswordConfirmation() {
+      if (this.password === this.passwordConfirmation) {
+        this.$refs.passwordConfirmation.setCustomValidity('')
+      } else {
+        this.$refs.passwordConfirmation.setCustomValidity('Password should match.')
+      }
+    },
+    validate() {
+      // Check data here.
+    }
+  }
+  ...
+```
+
+And we should register a watcher for `passwordConfirmation` too.
+
+``` js
+  ...
+  methods: { ... },
+  watch: {
+    password: 'validatePassword',
+    passwordConfirmation: 'validatePasswordConfirmation'
+  }
+  ...
+```
+
+We have the constraints now. Next, we should validate data on submit and present the user with failing validations.
+
+``` js
+  ...
+  methods: {
+    validatePassword() { ... },
+    validatePasswordConfirmation() { ... },
+    validate() {
+      this.validatePassword()
+      this.validatePasswordConfirmation()
+      if (!this.$refs.register.checkValidity()) {
+        this.$refs.register.reportValidity()
+        this.message = null
+      } else {
+        this.message = 'Registration successful.'
+      }
+    }
+  },
+  ...
+```
+
+We use `checkValidity()` to check the form constraints, and if there is a failure, we use `reportValidity()` to convey the validation error messages. Combining all above snippets we have the following component.
+
+``` html
+<template>
+  <form ref="register" @submit.prevent="validate">
+    <div>
+      Name
+      <input type="text" v-model="name" required />
+    </div>
+
+    <div>
+      Email
+      <input type="email" v-model="email" required pattern="[a-z0-9_.]+@gmail.com" />
+    </div>
+
+    <div>
+      Gender
+      <label>
+        <input type="radio" v-model="gender" value="female" /> Female
+      </label>
+
+      <label>
+        <input type="radio" v-model="gender" value="male" /> Male
+      </label>
+
+      <label>
+        <input type="radio" v-model="gender" value="other" /> Other
+      </label>
+    </div>
+
+    <div>
+      Birth Year
+      <input type="number" v-model.number="yearOfBirth" min="1900" max="2000" required />
+    </div>
+
+    <div>
+      Password
+      <input type="password" v-model="password" ref="password" maxlength="30" required />
+    </div>
+
+    <div>
+      Password Confirmation
+      <input type="password" v-model="passwordConfirmation" ref="passwordConfirmation" maxlength="30" required />
+    </div>
+
+    <div>
+      <button type="submit">Register</button>
+    </div>
+
+    {{ message }}
+  </form>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      name: '',
+      email: '',
+      gender: '',
+      yearOfBirth: '',
+      password: '',
+      passwordConfirmation: '',
+
+      message: null
+    }
+  },
+  methods: {
+    validatePassword() {
+      if (!/[A-Z]/.test(this.password)) {
+        this.$refs.password.setCustomValidity('Password should have at least one upper case character.')
+      } else if (!/[a-z]/.test(this.password)) {
+        this.$refs.password.setCustomValidity('Password should have at least one lower case character.')
+      } else if (!/[0-9]/.test(this.password)) {
+        this.$refs.password.setCustomValidity('Password should have at least one digit character.')
+      } else if (!/[*!@#$%^&\(\)_+=_,.?/.<>'";:\[\]\{\}|]/.test(this.password)) {
+        this.$refs.password.setCustomValidity('Password should have at least one special character.')
+      } else if (this.password.length < 8) {
+        this.$refs.password.setCustomValidity('Password should be at least 8 characters long.')
+      } else {
+        this.$refs.password.setCustomValidity('')
+      }
+    },
+    validatePasswordConfirmation() {
+      if (this.password === this.passwordConfirmation) {
+        this.$refs.passwordConfirmation.setCustomValidity('')
+      } else {
+        this.$refs.passwordConfirmation.setCustomValidity('Password should match.')
+      }
+    },
+    validate() {
+      this.validatePassword()
+      this.validatePasswordConfirmation()
+      if (!this.$refs.register.checkValidity()) {
+        this.$refs.register.reportValidity()
+        this.message = null
+      } else {
+        this.message = 'Registration successful.'
+      }
+    }
+  },
+
+  watch: {
+    password: 'validatePassword',
+    passwordConfirmation: 'validatePasswordConfirmation'
+  }
+}
+</script>
+```
+
+The HTML constraint validation API allows us to validate data with arbitrary constraints, but there are some issues with it. First and foremost, validation depends on browser implementation of constraint validation API, and older browsers do not support it. Secondly, the error message presentation is not consistent across browsers. And finally, the API is very verbose; it could result in massive components for a reasonably complex form.
+
+### JavaScript Validations
+
 ## Handling file uploads
 
 ## Create review (comment & rating) component
