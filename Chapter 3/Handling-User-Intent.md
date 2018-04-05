@@ -434,7 +434,7 @@ The button rendered in above example would have "lamp on" or "lamp off" text dep
 
 ## Validating user input
 
-The information collected from the users is often required to be in particular formats and to ensure this, we have to validate all user submitted data. Vue does not dictate any validation pattern; we can use native form validation API, custom JavaScript validations, server-side validations or a special purpose validation library. Let's try all these validation patterns.
+The information collected from the users is often required to be in particular formats and to ensure this, we have to validate all user submitted data. Vue does not dictate any validation pattern we can use native form validation API, custom JavaScript validations, server-side validations or a special purpose validation library. Let's try all these validation patterns.
 
 ### HTML Form Validation
 
@@ -545,7 +545,7 @@ The `validatePassword` method checks the strength of the password. We use `setCu
         this.$refs.password.setCustomValidity('Password should have at least one lower case character.')
       } else if (!/[0-9]/.test(this.password)) {
         this.$refs.password.setCustomValidity('Password should have at least one digit character.')
-      } else if (!/[*!@#$%^&\(\)_+=_,.?/.<>'";:\[\]\{\}|]/.test(this.password)) {
+      } else if (!/[*!@#$%^&\(\)_+=_,.?/.<>'":\[\]\{\}|]/.test(this.password)) {
         this.$refs.password.setCustomValidity('Password should have at least one special character.')
       } else if (this.password.length < 8) {
         this.$refs.password.setCustomValidity('Password should be at least 8 characters long.')
@@ -699,7 +699,7 @@ export default {
         this.$refs.password.setCustomValidity('Password should have at least one lower case character.')
       } else if (!/[0-9]/.test(this.password)) {
         this.$refs.password.setCustomValidity('Password should have at least one digit character.')
-      } else if (!/[*!@#$%^&\(\)_+=_,.?/.<>'";:\[\]\{\}|]/.test(this.password)) {
+      } else if (!/[*!@#$%^&\(\)_+=_,.?/.<>'":\[\]\{\}|]/.test(this.password)) {
         this.$refs.password.setCustomValidity('Password should have at least one special character.')
       } else if (this.password.length < 8) {
         this.$refs.password.setCustomValidity('Password should be at least 8 characters long.')
@@ -734,9 +734,209 @@ export default {
 </script>
 ```
 
-The HTML constraint validation API allows us to validate data with arbitrary constraints, but there are some issues with it. First and foremost, validation depends on browser implementation of constraint validation API, and older browsers do not support it. Secondly, the error message presentation is not consistent across browsers. And finally, the API is very verbose; it could result in massive components for a reasonably complex form.
+The HTML constraint validation API allows us to validate data with arbitrary constraints, but there are some issues with it. First and foremost, validation depends on browser implementation of constraint validation API, and older browsers do not support it. Secondly, the error message presentation is not consistent across browsers. And finally, the API is very verbose it could result in massive components for a reasonably complex form.
 
 ### JavaScript Validations
+
+JavaScript validation functions can check for data correctness and enforce arbitrary constraints. Unlike, HTML constraints validation API, JavaScript validations do not depend on browser specific APIs, so they are universal and would work in non-browser environments too.
+
+We will re-write the above example using JavaScript validations. Following is snippet validating `password` data property.
+
+``` js
+  ...
+  data() {
+    return {
+      ...
+      password: '',
+      ...
+      errors: {}
+    }
+  },
+  ...
+  methods: {
+    ...
+    validatePassword() {
+      const errors = []
+      if (this.password.length < 8) {
+        errors.push('Password should be at least 8 characters long.')
+      } else if (this.password.length > 30) {
+        errors.push('Password should be at max 30 characters long.')
+      }
+
+      const constraints = []
+      if (!/[A-Z]/.test(this.password)) {
+        constraints.push('one upper case')
+      }
+      if (!/[a-z]/.test(this.password)) {
+        constraints.push('one lower case')
+      }
+      if (!/[0-9]/.test(this.password)) {
+        constraints.push('one digit')
+      }
+      if (!/[*!@#$%^&\(\)_+=_,.?/.<>'":\[\]\{\}|]/.test(this.password)) {
+        constraints.push('one special')
+      }
+
+      if (constraints.length) {
+        errors.push('Password should have ' + constraints.join(', ') + ' character.')
+      }
+
+      this.errors.password = errors
+      this.validatePasswordConfirmation()
+    },
+    validatePasswordConfirmation() { ... },
+    ...
+  },
+  watch: {
+    password: 'validatePassword',
+    ...
+  },
+  ...
+```
+
+In above example, we validated custom constraints on `password` data property and stored violations in `errors.password` data property. In the following snippet, we can use `errors.password` to convey errors to the user in real-time.
+
+``` html
+<template>
+  ...
+  <div>
+    Password
+    <input type="password" v-model="password" />
+
+    <span>{{ errors.password }}</span>
+  </div>
+  ...
+</template>
+```
+
+Extending above strategy for all data properties, we have following methods:
+
+- `validateName`
+- `validateEmail`
+- `validateGender`
+- `validateYearOfBirth`
+- `validatePassword`
+- `validatePasswordConfirmation`
+
+And we register above methods as watchers on the corresponding data property. Additionally, we can have a computed property to check form validation status. In the following snippet, we check form validity based on the presence of error messages.
+
+``` js
+  ...
+  computed: {
+    isValid() {
+      return Object.keys(this.errors).length > 0 &&
+       Object.values(this.errors).every(it => it.length === 0)
+    }
+  },
+  ...
+```
+
+Putting all together, we have the following component.
+
+``` html
+<template>
+  <form @submit.prevent="validate">
+    <div>
+      Name
+      <input type="text" v-model="name" />
+
+      <div class="error" v-for="error in errors.name" :key="error">{{ error }}</div>
+    </div>
+
+    <div>
+      Email
+      <input type="email" v-model="email" />
+
+      <div class="error" v-for="error in errors.email" :key="error">{{ error }}</div>
+    </div>
+
+    <div>
+      Gender
+      <label>
+        <input type="radio" v-model="gender" value="female" /> Female
+      </label>
+
+      <label>
+        <input type="radio" v-model="gender" value="male" /> Male
+      </label>
+
+      <label>
+        <input type="radio" v-model="gender" value="other" /> Other
+      </label>
+
+      <div class="error" v-for="error in errors.gender" :key="error">{{ error }}</div>
+    </div>
+
+    <div>
+      Birth Year
+      <input type="number" v-model.number="yearOfBirth" />
+
+      <div class="error" v-for="error in errors.yearOfBirth" :key="error">{{ error }}</div>
+    </div>
+
+    <div>
+      Password
+      <input type="password" v-model="password" />
+
+      <div class="error" v-for="error in errors.password" :key="error">{{ error }}</div>
+    </div>
+
+    <div>
+      Password Confirmation
+      <input type="password" v-model="passwordConfirmation" />
+
+      <div class="error" v-for="error in errors.passwordConfirmation"
+        :key="error">{{ error }}</div>
+    </div>
+
+    <div>
+      <button type="submit">Register</button>
+    </div>
+
+    {{ message }}
+  </form>
+</template>
+
+<script>
+import { required, sameAs, minLength } from 'vuelidate/lib/validators'
+
+export default {
+  data() {
+    return {
+      name: '',
+      email: '',
+      gender: '',
+      yearOfBirth: '',
+      password: '',
+      passwordConfirmation: '',
+
+      message: null,
+      errors: {}
+    }
+  },
+  methods: {
+    validate() {
+      if (!this.$v.$invalid) this.message = 'Registration successful.'
+    }
+  },
+
+  validations: {
+    name: { required },
+    email: { required },
+    yearOfBirth: { }
+  }
+}
+</script>
+
+<style>
+.error {
+  font-size: 0.75rem;
+  color: red;
+}
+</style>
+```
+
+In comparison to HTML constraints validation API, JavaScript validations are flexible and universal. The issue of verbosity remains but we can create a Vue plugin to handle JavaScript validation in more declarative manner. Vuelidate and Vee-validate are two such plugins.
 
 ## Handling file uploads
 
