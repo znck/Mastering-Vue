@@ -1,4 +1,6 @@
 {
+  "name": "@znck/book-mastering-vue"
+  "version": "0.0.0",
   "private": true,
   "dependencies": {
     "escape-html": "^1.0.3",
