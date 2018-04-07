@@ -938,9 +938,13 @@ export default {
 
 In comparison to HTML constraints validation API, JavaScript validations are flexible and universal. The issue of verbosity remains but we can create a Vue plugin to handle JavaScript validation in more declarative manner. Vuelidate and Vee-validate are two such plugins.
 
+<!-- TODO: Write someday
 ## Handling file uploads
+-->
 
 ## Create review (comment & rating) component
+
+We will create a component to collect customer reviews. The component should input start rating with optional comments.
 
 ## Create cart component
 
