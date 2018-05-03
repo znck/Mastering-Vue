@@ -56,7 +56,8 @@ fs.readdirSync(__dirname)
     const target = path.join(outputDirectory, path.basename(it).replace(/\.md$/, '.html'))
 
     if (!fs.existsSync(outputDirectory)) fs.mkdirSync(outputDirectory)
-    child.execSync(`cp -a ${n(path.join(inputDirectory, 'assets'))} ${n(path.join(outputDirectory, 'assets'))}`)
+    if (fs.existsSync(path.join(inputDirectory, 'assets')))
+      child.execSync(`cp -a ${n(path.join(inputDirectory, 'assets'))} ${n(path.join(outputDirectory, 'assets'))}`)
     child.execSync(`cp ${n(cssPath)} ${n(path.join(outputDirectory, 'style.css'))}`)
     console.log('> ' + path.basename(it))
     fs.writeFileSync(target, 
