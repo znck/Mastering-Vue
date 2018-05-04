@@ -14,9 +14,9 @@ This book is focused on developers who understand JavaScript and CSS, seasoned b
 
 ## Detailed outline
 
-### Part 1- Getting Started
+### Part 1 - Getting Started
 
-#### [1. Introduction](./Chapter 1) - 40-50 pages
+#### Chapter 1. <a href="./Chapter 1">Introduction</a> - 40-50 pages
 
 This chapter scratches the surface of vue and discusses about MVVM architecture. Understanding application life-cycle in browser.
 Declarative rendering, data binding, event handling, components, composition, mixins, async components.
@@ -29,7 +29,7 @@ Declarative rendering, data binding, event handling, components, composition, mi
 
 ### Part 2 - Building the Application
 
-#### [2. Creating an online hat store](./Chapter 2) - 25-30 pages
+#### Chapter 2. <a href="./Chapter 2">Creating an online hat store</a> - 25-30 pages
 
 This chapter covers the process of creating/scaffolding new project, development environment and project structure, components and composition. Along with above concepts, it focuses on building two pages of the application — a product list page (to display list of all items) and a category page (to display list of all items of a category).
 
@@ -59,7 +59,7 @@ This chapter covers the process of creating/scaffolding new project, development
 * **Skills:**
   How create and run simple applications without any configuration? How to scaffold new projects using vue CLI? How to configure development environment? Understanding of data binding in vue application, rendering list of items, conditionally rendering content, code reuse and unit testing components.
 
-#### [3 - Handling User Intent](./Chapter 3) - 25-30 pages
+#### Chapter 3. <a href="./Chapter 3">Handling User Intent</a> - 25-30 pages
 
 This chapter focuses on user interaction handling and we add two more components (cart and comment widget) to the application.
 
@@ -78,7 +78,7 @@ This chapter focuses on user interaction handling and we add two more components
 * **Topics:** Event binding, event propagation, custom events, input components, validation, computed properties, watchers.
 * **Skills:** Communication between various components.
 
-#### [4 - Advanced Components](./Chapter 4) - 20-25 pages
+#### Chapter 4. <a href="./Chapter 4">Advanced Components</a> - 20-25 pages
 
 This chapter talks about different types of components.
 
@@ -107,7 +107,7 @@ This chapter talks about different types of components.
 * **Skills:**
   Creating different kinds of components.
 
-#### [5 - Integrating UI Frameworks](./Chapter 5)
+#### Chapter 5. <a href="./Chapter 5">Integrating UI Frameworks</a> - 20-25 pages
 
 This chapter talks about using UI frameworks.
 
