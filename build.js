@@ -53,7 +53,7 @@ fs.readdirSync(__dirname)
     const inputDirectory = path.dirname(it)
     const output = marked(input, { renderer })
     const outputDirectory = path.join(inputDirectory, 'dist')
-    const target = path.join(outputDirectory, path.basename(it).replace(/\.md$/, '.html'))
+    const target = path.join(outputDirectory, path.basename(it).replace(/README\.md$/, 'index.html').replace(/\.md$/, '.html'))
 
     if (!fs.existsSync(outputDirectory)) fs.mkdirSync(outputDirectory)
     if (fs.existsSync(path.join(inputDirectory, 'assets')))

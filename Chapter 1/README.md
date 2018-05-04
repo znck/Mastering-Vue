@@ -1,8 +1,18 @@
 # Introduction
 
-Mastering Vue is an advanced take on building applications with vue. The book takes the readers on a vuetiful journey of creating an app, undertaking a progressive learning approach. We begin with a minimal starter app and incrementally improve it throughout the book. We introduce new topics, discuss in detail and use in the app. It focuses on real-world use, and we will consider every tool available to vue ecosystem in detail.
+Mastering Vue is an advanced take on building applications with Vue. The book takes the readers on a vuetiful journey of creating an app, undertaking a progressive learning approach. We begin with a minimal starter app and incrementally improve it throughout the book. We shall introduce new topics which we will discuss in detail and use in the app. It focuses on real-world use, and we will consider every tool available to vue ecosystem in detail.
 
-For developers new to vue.js, we have this chapter which provides an adequate base to work through the book and mastering vue. It discusses the life cycle of a vue application, core concepts and building user interfaces with vue.
+For developers new to vue.js, this chapter will provides an adequate base to work throughout the book and help you mastering Vue. We focus on following fundamentals of Vue:
+
+* What is Vue?
+* What is a Vue application?
+* Life cycle of a Vue application.
+* What is declarative rendering?
+* How to use template syntax?
+* Using programming logic in templates.
+* Handling events and form input.
+* What is component composition?
+* What are directives, mixins and filters?
 
 ## What is Vue?
 

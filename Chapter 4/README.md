@@ -208,3 +208,16 @@ Lets summarize the above discussed features a plugin can provide:
 * Extend component API.
 
 ### Publishing a Vue plugin
+
+Vue plugins can be published as normal NPM packages but there is a convention of auto installing the plugin when used directly in a browser.
+
+``` js
+export default function MyPlugin(Vue, options) {
+  ...
+}
+
+// Auto install in browser.
+if (typeof window !== 'undefined' && 'Vue' in window) {
+  Vue.install(MyPlugin, {})
+}
+```
