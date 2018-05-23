@@ -1,8 +1,8 @@
 # Introduction
 
-Mastering Vue is an advanced take on building applications with Vue. The book takes the readers on a vuetiful journey of creating an app, undertaking a progressive learning approach. We begin with a minimal starter app and incrementally improve it throughout the book. We shall introduce new topics which we will discuss in detail and use in the app. It focuses on real-world use, and we will consider every tool available to vue ecosystem in detail.
+Mastering Vue is an advanced take on building applications with Vue. The book takes the readers on a vuetiful journey of creating an app, undertaking a progressive learning approach. We begin with a minimal starter app and incrementally improve it throughout the book. We shall introduce new topics as required and discuss in detail before using in the example application. It focuses on real-world use, and we will consider every tool available to Vue ecosystem in detail.
 
-For developers new to vue.js, this chapter will provides an adequate base to work throughout the book and help you mastering Vue. We focus on following fundamentals of Vue:
+For developers new to Vue, this chapter will provides an adequate base to work throughout the book and help you mastering Vue. We focus on following fundamentals:
 
 * What is Vue?
 * What is a Vue application?
@@ -16,25 +16,30 @@ For developers new to vue.js, this chapter will provides an adequate base to wor
 
 ## What is Vue?
 
-Vue _(pronounced /vjuː/, like view)_ is user interface library built with high regards to developer experience and performance. The creator, *Evan You*, advertises it as a progressive framework. Progressive _(aka continuing or developing)_; the core _(hereafter referred as vue)_ is just a view layer library, but with supporting libraries crafted to be incrementally adoptable, it creates a sense of framework.
+Vue _(pronounced /vjuː/, like view)_ is user interface library built with high regards to developer experience and performance. The creator, *Evan You*, advertises it as a progressive framework. Progressive _(aka continuing or developing)_; the core _(hereafter referred as Vue)_ is just a view layer library, but with supporting libraries crafted to be incrementally adoptable, it creates a sense of framework.
 
-It is first and foremost approachable. There is no need to scaffold a project, to learn new syntax or to set up complicated environment configuration. Add a script tag on an HTML page, and we are using vue.
+It is first and foremost approachable. There is no need to scaffold a project, to learn new syntax or to set up complicated environment configuration. Add a script tag on an HTML page, and we are using Vue.
 
 Along with approachability, it is versatile enough to serve reactive needs of a portion of a page to a full-blown enterprise application. It starts with declarative rendering and reactivity as base building blocks, then as the application grows, include features like client-side routing, shared state management, animations, server rendering and much more.
 
-With user attention span growing shorter and shorter, modern applications strive to be fast, and small size and blazing fast virtual DOM enable performance. The innovative reactivity system of vue keeps growing application performant as it always knows what is changing and tries to minimize render efforts by the browser. It also embodies various optimizations during bundling and tries to keep developer optimization efforts at the minimum.
+With user attention span growing shorter and shorter, modern applications strive to be fast. Vue's small size and blazing fast virtual DOM and reactivity system enable performance at scale.
 
 ## A Vue Application
 
-A vue application is a component tree mounted to a DOM element. Components are building blocks of a vue application. Functionally they are very much similar to HTML elements; we will know more about them in the following section. 
+A Vue application is a component tree mounted to a DOM element. Components are building blocks of a Vue application. Functionally they are very much similar to HTML elements; we will know more about them in the following section. 
 
-Let us create a small vue application. We would use [jsfiddle.net](https://jsfiddle.net) for all examples in this chapter. The editor of jsfiddle.net has four sections; namely HTML, CSS, JavaScript, and Result. HTML section accepts contents of `<body>`. JavaScript section is appended after HTML section as a `<script>` element. CSS section is added to `<header>` of hence generated HTML page; which we can preview in Result section.
+Let us create a small Vue application. We would use [jsfiddle.net](https://jsfiddle.net) for all examples in this chapter. The editor of jsfiddle.net has four sections:
+
+* **HTML:** Contents are used as markup in `<body>`.
+* **CSS:** Styles are inlined in the `<head>`.
+* **JavaScript:** Appended after the contents of HTML section.
+* **Result:** Renders preview of the above created webpage.
 
 Let get to coding. Open jsfiddle.net.
 
 ![JSFiddle Editor](./assets/jsfiddle.net-screenshot.png)
 
-First and foremost, we need vue in our fiddle. We would be using vue from a CDN. Go ahead and add following code in HTML section.
+First and foremost, we need Vue in our fiddle. We would be using Vue from a CDN service like JSDeliver or Unpkg. Go ahead and add the following code in HTML section.
 
 ``` html
 
@@ -45,7 +50,7 @@ First and foremost, we need vue in our fiddle. We would be using vue from a CDN.
 
 ```
 
-We have vue in our fiddle now. Let's create a simple application. Put following script in JavaScript section.
+Now, We have `Vue` constructor available globally. Let's create a simple application. Put the following script in JavaScript section.
 
 ``` js
 
@@ -55,31 +60,41 @@ new Vue({
 
 ```
 
-Hit Run button to preview the application. In Result section, we would find a "Hello World" printed. Just like that, we have created our first vue application. _([jsfiddle.net/znck/bvasvc32](https://jsfiddle.net/znck/bvasvc32/))_
+Hit Run button to preview the application. In Result section, we would find a "Hello World" printed. Just like that, we have created our first Vue application. _([jsfiddle.net/znck/bvasvc32](https://jsfiddle.net/znck/bvasvc32/))_
 
 Let's break it up and understand what is happening.
 
 1. We create an instance of `Vue`.
-1. The `el` property above is a selector string, and the target element of this selector is the mount point of our application. A vue instance when mounted to a DOM element, renders content into the mount point and keeps DOM in sync with the application state.
+1. The `el` property above is a selector string, and the target element of this selector is the mount point of our application. A Vue instance when mounted to a DOM element, renders content into the mount point and keeps DOM in sync with the application state.
 1. The inner content of `<div>` with id `app` is the template for the application.
 
-Go ahead and inspect the page, we would find that vue replaces the mount point (`<div id="app">`) with the rendered content.
+Go ahead and inspect the page, we would find that Vue replaces the mount point (`<div id="app">`) with the rendered content.
 
 ### The Vue Instance
 
-<!-- TODO: Write about creating vue instance -->
+In above example, we created a Vue instance to demonstrate a "Hello World" application. Every application starts by creating an instance of Vue. The Vue constructor accepts an options object.
+
+``` js
+
+new Vue({
+  // options
+})
+
+```
+
+<!-- TODO: Write something about options. -->
 
 #### Data and Methods
 
-<!-- TODO: Write about application state and methods -->
+<!-- TODO: Write about application state and methods. -->
 
-#### Lifecycle
+#### Life-cycle Hooks
 
-<!-- TODO: Write about application lifecycle -->
+<!-- TODO: Write about application life-cycle. -->
 
 ## Getting Started
 
-<!-- TODO: Add entry paragraph -->
+<!-- TODO: Add entry paragraph. -->
 
 ### Declarative Rendering
 
@@ -109,7 +124,7 @@ The `data` property defines the state of the application. The values defined in 
 
 We use the mustache syntax to use the state in our template. We see the page has text as  "Hello John". 
 
-It may look similar to template processors like handlebars et.el., but there is a lot more going on here. The data and DOM are linked and reactive, i.e., if we update `name`, it would reflect in the DOM. Let's try this out, append following snippet to above script.
+It may look similar to template processors like handlebars, but there is a lot more going on here. The data and DOM are bound together and it's reactive, i.e., if we update `name`, it would reflect in the DOM. Let's try this out, append following snippet to above script.
 
 ``` js
 
@@ -119,15 +134,17 @@ setTimeout(() => {
 
 ```
 
-Here, we set the name to 'Jane' after 3 seconds. We would see that the text on the page would change from "Hello John" to "Hello Jane" after 3 seconds. So, we have a reactive state. We can use this reactive state in the template, and the page would update when the state changes. In next section, we will explore the template syntax.
+Here, we set the name to 'Jane' after 3 seconds. We would see that the text on the page would change from "Hello John" to "Hello Jane". We can use component state in the template, and the page would update when the state changes. In the next section, we will explore the template syntax in detail.
 
 ### Template Syntax
 
-Vue uses HTML-based template syntax which can be parsed by spec-complaint browsers and parsers. The template allows rendering application state into DOM declaratively. 
+Vue uses HTML-based template syntax which can be parsed by spec-complaint browsers and parsers. The template is declarative way of rendering application state into DOM node.
 
-Vue compiles templates to javascript functions, and these functions render the virtual DOM. When state changes, vue uses the reactivity system intelligently to figure the components to re-render and apply a minimum number of DOM manipulations from these re-renders.
+The template is converted to JavaScript render function which in turn generates virtual DOM. When state changes, the reactivity system figures outs the effected components and the re-render is triggered to generate new virtual DOM nodes. Vue compares the new virtual DOM nodes with the old virtual DOM tree to find a minimum number of DOM changes.
 
-The template syntax adds following features to plain HTML.
+The template syntax extends HTML with following features:
+
+* Interpolations
 
 #### Interpolations
 
@@ -162,7 +179,7 @@ Vue processes the expression in the mustache tag in the data scope of the corres
 
 Moreover, the expressions are sandboxed and only have access to few whitelisted globals such as `Math` and `Date`. 
 
-The mustaches interpret data as plain text, but there are times when we want to interpolate some HTML string, vue has special syntax for these situations; `v-html` directive. We will discover more about it in the next section.
+The mustaches interpret data as plain text, but there are times when we want to interpolate some HTML string, Vue has special syntax for these situations; `v-html` directive. We will discover more about it in the next section.
 
 ##### Attributes
 
@@ -426,7 +443,7 @@ Example:
 
 ###### v-cloak
 
-`v-cloak` will remain on the element until the associated vue instance finishes compilation. It can be used to hide un-compiled mustache binding until the Vue instance is ready when using in-DOM templates.
+`v-cloak` will remain on the element until the associated Vue instance finishes compilation. It can be used to hide un-compiled mustache binding until the Vue instance is ready when using in-DOM templates.
 
 `v-cloak` should be combined with CSS rules such as `[v-cloak] { display: none; }`.
 
@@ -458,7 +475,7 @@ Example:
 
 ### Conditional Rendering
 
-Programming languages have *if* statement for conditionally executing some part of the code. Vue has a similar construct for conditionally rendering some part of the template. The `v-if`, `v-else`, `v-else-if` and `v-show` directives instruct vue to conditionally render elements.
+Programming languages have *if* statement for conditionally executing some part of the code. Vue has a similar construct for conditionally rendering some part of the template. The `v-if`, `v-else`, `v-else-if` and `v-show` directives instruct Vue to conditionally render elements.
 
 ``` html
 
@@ -516,7 +533,7 @@ A directive can be attached to a single element. However, when we need to toggle
 
 #### Controlling Reusable Elements
 
-Whenever possible, vue re-uses elements when rendering conditional blocks which makes vue very fast. We can take advantage of these re-used elements, e.g. `<input>` element preserves the entered text as the element is re-used.
+Whenever possible, Vue re-uses elements when rendering conditional blocks which makes Vue very fast. We can take advantage of these re-used elements, e.g. `<input>` element preserves the entered text as the element is re-used.
 
 ``` html
 
@@ -533,7 +550,7 @@ Whenever possible, vue re-uses elements when rendering conditional blocks which 
 
 As both templates use same elements, the elements are re-used and `<input>` preserves its value. Only the `placeholder` attribute is updated.
 
-The re-use of the element is not always desirable though; we should add a `key` attribute with unique values to tell vue not to re-use the element.
+The re-use of the element is not always desirable though; we should add a `key` attribute with unique values to tell Vue not to re-use the element.
 
 ``` html
 
@@ -1399,7 +1416,6 @@ When selected, `app.choose` is equal to `{ number: 123 }`.
 
 ### Components
 
-
 Components are custom elements that encapsulate reusable code and extend HTML elements. They are also Vue instances, and so accept the same options object and provide the same lifecycle hooks.
 
 #### Registration
@@ -1598,7 +1614,7 @@ Vue.component('child', {
 
 Component events are similar to native DOM events. Events allow the component to trigger side effects in the external environment.
 
-The vue events interface:
+The Vue events interface:
 
 - `$on(eventName, listener)` for listening to an event.
 - `$emit(eventName, payload)` for triggering an event.
