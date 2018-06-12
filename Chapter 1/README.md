@@ -151,11 +151,25 @@ app.foo // = 3
 
 In addition to surfacing `data` properties, Vue instance exposes some useful instance properties and methods. These are prefixed with `$` to prevent any possible collision with user-defined `data` properties.
 
-<!-- TODO: Write about instance methods. -->
+Similar to `data`, all `methods` properties are also surfaced as instance methods and bound to `this` context of the Vue instance.
+
+```js
+const app = new Vue({
+  methods: {
+    foo() {
+      this // = app
+
+      return 'foo'
+    }
+  }
+})
+
+app.foo() // = 'foo'
+```
 
 #### Life-cycle Hooks
 
-<!-- TODO: Write about application life-cycle. -->
+A Vue instance on creation goes through a series of initialization steps, e.g., observe data, bind `this` context to methods, compile template, mount instance into the DOM, update DOM when data changes. These ... <!-- TODO: Write about application life-cycle. -->
 
 ## Getting Started
 
