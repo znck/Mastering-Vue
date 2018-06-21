@@ -169,7 +169,21 @@ app.foo() // = 'foo'
 
 #### Life-cycle Hooks
 
-A Vue instance on creation goes through a series of initialization steps, e.g., observe data, bind `this` context to methods, compile template, mount instance into the DOM, update DOM when data changes. These ... <!-- TODO: Write about application life-cycle. -->
+A Vue instance on creation goes through a series of initialization steps, e.g., observe data, compile template, mount instance into the DOM, update DOM when data changes.
+It is possible to execute custom logic at specific stages using special functions called life-cycle hooks. Following are the hooks called at different stages of Vue instance:
+
+1. `beforeCreate`
+2. `created`
+3. `beforeMount`
+4. `mounted`
+5. `beforeUpdate`
+6. `updated`
+7. `beforeDestroy`
+8. `destroyed`
+
+The life-cycle hooks are invoked with their `this` context pointing to the Vue instance calling it.
+
+![Vue instance life-cycle](./assets/life-cycle.svg)
 
 ## Getting Started
 
