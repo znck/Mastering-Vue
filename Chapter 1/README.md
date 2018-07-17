@@ -187,7 +187,7 @@ The life-cycle hooks are invoked with their `this` context pointing to the Vue i
 
 ## Getting Started
 
-<!-- TODO: Add entry paragraph. -->
+Before diving into the world of Vue applications, we will look into the very fundamentals.
 
 ### Declarative Rendering
 
